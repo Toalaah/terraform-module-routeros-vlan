@@ -48,7 +48,7 @@ resource "routeros_interface_bridge_port" "untagged_interfaces" {
 
 # Configure bridge VLAN settings
 resource "routeros_interface_bridge_vlan" "vlan_interfaces" {
-  vlan_ids = var.vlan_id
+  vlan_ids = toset([var.vlan_id])
   bridge   = var.bridge
   tagged   = local.tagged_vlan_interfaces
   untagged = var.untagged_interfaces
@@ -78,6 +78,6 @@ resource "routeros_ip_dhcp_server_network" "this" {
 
   address    = local.network_cidr
   gateway    = local.gateway
-  dns_server = join(",", var.dhcp_dns_servers)
+  dns_server = var.dhcp_dns_servers
   comment    = local.comment
 }
